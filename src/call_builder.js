@@ -1,15 +1,15 @@
 import forEach from 'lodash/forEach';
 import URI from 'urijs';
 import URITemplate from 'urijs/src/URITemplate';
-
+import eventsource from 'react-native-event-source';
 import HorizonAxiosClient from './horizon_axios_client';
 import { version } from '../package.json';
 import { NotFoundError, NetworkError, BadRequestError } from './errors';
 
 const EventSource =
   // eslint-disable-next-line no-undef, prefer-import/prefer-import-over-require
-  typeof window === 'undefined' ? require('eventsource') : window.EventSource;
-
+  typeof document === 'undefined' ? eventsource : window.EventSource;
+  
 /**
  * Creates a new {@link CallBuilder} pointed to server defined by serverUrl.
  *
