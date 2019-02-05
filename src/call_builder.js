@@ -95,7 +95,7 @@ export class CallBuilder {
       }
 
       createTimeout();
-
+/*
       es.onmessage = (message) => {
         const result = message.data
           ? this._parseRecord(JSON.parse(message.data))
@@ -107,12 +107,32 @@ export class CallBuilder {
         createTimeout();
         options.onmessage(result);
       };
+	  */
+	es.addEventListener('message', (message) => {
+		const result = message.data
+          ? this._parseRecord(JSON.parse(message.data))
+          : message;
+        if (result.paging_token) {
+          this.url.setQuery('cursor', result.paging_token);
+        }
+        clearTimeout(timeout);
+        createTimeout();
+        options.onmessage(result);	  
+	  
+    });	  
+	  
+	es.addEventListener('error', (error) => {
+		if (options.onerror) {
+          options.onerror(error);
+        }
+	});
 
+/*
       es.onerror = (error) => {
         if (options.onerror) {
           options.onerror(error);
         }
-      };
+      };*/
 
       return es;
     };
